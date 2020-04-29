@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: opencpu-demo
+  name: opencpu-demo
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: opencpu-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: opencpu-demo
+    spec:
+      containers:
+      - image: gcr.io/gcer-public/opencpu-demo:latest
+        name: opencpu-demo
+        ports:
+        - containerPort: 8004
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opencpu-demo
+  namespace: default
+  labels:
+    service: opencpu-demo
+spec:
+  ports:
+  - port: 8004
+    protocol: TCP
+  selector:
+    app: opencpu-demo
